@@ -2,6 +2,7 @@ color black = #000000;
 color white = #FFFFFF;
 color selected = black;
 float sliderX;
+float sliderY;
 float shade = 135;
 
 void setup(){
@@ -10,11 +11,13 @@ void setup(){
   stroke(255,0,0);
   fill(255,0,0);
   sliderX = 250;
+  sliderY = 250;
 }
 void draw(){
   background(shade);
-  line(50,250,450,250);
-  circle(sliderX,250,75);
+  stroke(255,0,0);
+  line(50,50,450,450);
+  circle(sliderX,sliderY,75);o
 }
 void mouseDragged(){
   controlSlider();
@@ -23,8 +26,9 @@ void mouseReleased(){
   controlSlider();
 }
 void controlSlider(){
-  if (mouseX < 451 && mouseY > 174 && mouseX > 49 && mouseY < 326){
+  if (mouseX > 49 && mouseX < 451){
     sliderX = mouseX;
+    sliderY = sliderX;
   }
   shade = sliderX * .5;
 }
