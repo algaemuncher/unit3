@@ -53,6 +53,14 @@ void menubar() {
   line(280, 20, 280, 105);
   tactstamp(310, 10);
   eraser();
+  tactrect(460, 10);
+  tactrect(460, 53);
+  tactrect(460, 96);
+  fill(200);
+  textSize(25);
+  text("new",493,35);
+  text("save",492,76);
+  text("load",492,122);
 }
 void tactcircle(int x, int y, int radius, color c) {
   fill(c);
@@ -83,6 +91,14 @@ void tactstamp(int x, int y) {
   rect(x, y, 135, 110);
   image(approved, x+5, y+5, 125, 100);
 }
+void tactrect(int x, int y) {
+  if (x < mouseX && mouseX < x+110 && y < mouseY && mouseY < y+33) {
+    stroke(255);
+  } else {
+    stroke(0);
+  }
+  rect(x, y, 110, 33);
+}
 void eraser() {
   if (75 < mouseX && mouseX < 75+45 && 55 < mouseY && mouseY < 55+16) {
     stroke(255);
@@ -107,6 +123,7 @@ void mousePressed() {
   stamp();
   erase();
 }
+
 void mouseReleased() {
   if (310 < mouseX && mouseX < 310+135 && 10 < mouseY && mouseY < 10+125 && mode != STAMP) {
     mode = STAMP;
@@ -118,6 +135,9 @@ void mouseReleased() {
   } else if (75 < mouseX && mouseX < 75+45 && 55 < mouseY && mouseY < 55+16 && mode == ERASE) {
     mode = DRAW;
   }
+  clear();
+  save();
+  load();
 }
 void dragdraw(float size) {
   if (mouseY > 140) {
@@ -136,12 +156,45 @@ void slidercontrol() {
   }
 }
 void erase() {
-  if (mode == ERASE) {
-    stroke(142);
-    strokeWeight(size);
-    line(pmouseX, pmouseY, mouseX, mouseY);
-    //noStroke();
-    //circle(mouseX, mouseY, size);
+  if (mouseY > 140) {
+    if (mode == ERASE) {
+      stroke(142);
+      strokeWeight(size);
+      line(pmouseX, pmouseY, mouseX, mouseY);
+    }
+  }
+}
+void saveImage(File f) {
+  if (f != null) {
+    PImage canvas = get(0,141,width,height-141);
+    canvas.save(f.getAbsolutePath());
+  }
+}
+void openImage(File f){
+  if (f != null){
+    int n = 0;
+    while (n < 10){
+      PImage pic = loadImage(f.getPath());
+      image(pic,0,0);
+      n = n + 1;
+    }
+  }
+}
+void clear(){
+  if (mouseX > 460 && mouseY > 10 && mouseX < 570 && mouseY < 43){
+    noStroke();
+    fill(142);
+    rect(0,140,600,460);
+  }
+}
+void save(){
+  if (mouseX > 460 && mouseY > 53 && mouseX < 570 && mouseY < 86){
+    selectOutput("MUST BE IN ACCEPTABLE FORMATS (png,jpg,etc)","saveImage");
+  }
+}
+void load(){
+  if (mouseX > 460 && mouseY > 96 && mouseX < 570 && mouseY < 129){
+    selectInput("Pick an image to load","openImage");
   }
 }
 void stamp() {
